@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kicau Mania - Tutup Hidung Challenge</title>
+    <meta name="description" content="Kicau Mania Challenge! Tutup hidungmu dan lihat apa yang terjadi.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for Modern Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Kicau Mania Challenge 🐦</h1>
+            <p>Tutup hidungmu ke kamera dan lihat kejutannya!</p>
+        </header>
+
+        <div class="camera-wrapper">
+            <div id="loading" class="loading-overlay">
+                <div class="spinner"></div>
+                <p>Memuat AI Camera...</p>
+            </div>
+            <video id="webcam" autoplay playsinline></video>
+            <canvas id="output_canvas"></canvas>
+            <div id="status" class="status-badge">Menunggu Deteksi...</div>
+        </div>
+
+        <audio id="audio" src="kc.mp3" preload="auto"></audio>
+
+        <!-- Cats initially hidden -->
+        <div id="cats-container" class="hidden">
+            <img src="cat.gif" class="cat cat-tl" alt="Cat Top Left">
+            <img src="cat.gif" class="cat cat-tr" alt="Cat Top Right">
+            <img src="cat.gif" class="cat cat-bl" alt="Cat Bottom Left">
+            <img src="cat.gif" class="cat cat-br" alt="Cat Bottom Right">
+            <img src="cat.gif" class="cat cat-center" alt="Cat Center">
+        </div>
+    </div>
+
+    <!-- MediaPipe Script Dependencies -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+:root {
+    --primary: #8a2be2;
+    --secondary: #ff1493;
+    --bg-color: #0f172a;
+    --text: #f8fafc;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Prevent scrolling when cats appear */
+    background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+}
+
+.app-container {
+    width: 100%;
+    max-width: 800px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    z-index: 10;
+}
+
+header {
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    font-size: 1.1rem;
+    color: #94a3b8;
+}
+
+.camera-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 4/3;
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#webcam {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* Mirror image */
+}
+
+#output_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    transform: scaleX(-1); /* Mirror to match webcam */
+    pointer-events: none;
+}
+
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    transition: opacity 0.5s;
+}
+
+.loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--glass-border);
+    border-top-color: var(--secondary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+.status-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+    z-index: 3;
+    transition: all 0.3s ease;
+}
+
+.status-badge.active {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    box-shadow: 0 0 15px var(--secondary);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+    100% { transform: translateX(-50%) scale(1); }
+}
+
+/* Cats Effect Styles */
+#cats-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#cats-container.active {
+    opacity: 1;
+}
+
+.cat {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(255, 20, 147, 0.5));
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(0.5);
+}
+
+#cats-container.active .cat {
+    transform: scale(1);
+    animation: wiggle 2s infinite ease-in-out;
+}
+
+.cat-tl { top: 20px; left: 20px; }
+.cat-tr { top: 20px; right: 20px; }
+.cat-bl { bottom: 20px; left: 20px; }
+.cat-br { bottom: 20px; right: 20px; }
+.cat-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(0 0 40px rgba(138, 43, 226, 0.8));
+}
+
+#cats-container.active .cat-center {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(-5deg) scale(1); }
+    50% { transform: rotate(5deg) scale(1.1); }
+}
+@keyframes wiggle-center {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-5deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(5deg) scale(1.1); }
+}
+
+#cats-container.active .cat-center {
+    animation: wiggle-center 1s infinite ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .cat { width: 80px; height: 80px; }
+    .cat-center { width: 100px; height: 100px; }
+    h1 { font-size: 2rem; }
+}
