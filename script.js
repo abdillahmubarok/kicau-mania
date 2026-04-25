@@ -49,18 +49,18 @@ async function initializeModels() {
         setupCamera();
     } catch (error) {
         console.error("Error loading models:", error);
-        statusBadge.innerText = "Error AI: " + error.message;
+        statusBadge.innerText = "AI Error: " + error.message;
         statusBadge.style.background = "red";
-        loadingOverlay.innerHTML = `<p>Gagal memuat AI: ${error.message}</p>`;
+        loadingOverlay.innerHTML = `<p>Failed to load AI: ${error.message}</p>`;
     }
 }
 
 // Setup Webcam
 async function setupCamera() {
     if (!window.isSecureContext) {
-        statusBadge.innerText = "Error: Koneksi Tidak Aman";
+        statusBadge.innerText = "Error: Insecure Connection";
         statusBadge.style.background = "red";
-        loadingOverlay.innerHTML = "<p>Kamera diblokir browser. Gunakan localhost atau HTTPS.</p>";
+        loadingOverlay.innerHTML = "<p>Camera blocked by browser. Use localhost or HTTPS.</p>";
         return;
     }
 
@@ -77,12 +77,12 @@ async function setupCamera() {
         video.srcObject = stream;
         video.addEventListener("loadeddata", predictWebcam);
         loadingOverlay.classList.add("hidden");
-        statusBadge.innerText = "Siap! Coba tutup hidungmu";
+        statusBadge.innerText = "Ready! Try covering your nose";
     } catch (err) {
         console.error("Error accessing camera:", err);
-        statusBadge.innerText = "Error Kamera: " + err.name;
+        statusBadge.innerText = "Camera Error: " + err.name;
         statusBadge.style.background = "red";
-        loadingOverlay.innerHTML = `<p>Gagal akses kamera: ${err.message || err.name}</p><p>Pastikan Anda mengizinkan akses kamera.</p>`;
+        loadingOverlay.innerHTML = `<p>Failed to access camera: ${err.message || err.name}</p><p>Please ensure you allow camera access.</p>`;
     }
 }
 
@@ -186,7 +186,7 @@ function handleNotCovering() {
         coveringTimeout = setTimeout(() => {
             isEffectActive = false;
             catsContainer.classList.remove("active");
-            statusBadge.innerText = "Siap! Coba tutup hidungmu";
+            statusBadge.innerText = "Ready! Try covering your nose";
             statusBadge.classList.remove("active");
             
             // Stop audio and reset to beginning
